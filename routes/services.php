@@ -3,11 +3,10 @@
 use App\Http\Controllers\ServicesController;
 use Illuminate\Support\Facades\Route;
 
-$routeName = "services";
+$servicesRoute = "services";
 
-Route::get('/'. $routeName, [ServicesController::class,'index']);
-Route::get('/'. $routeName .'/create', [ServicesController::class,'index']);
-
-Route::post('/create', [ServicesController::class,'create']);
+Route::get("/$servicesRoute", [ServicesController::class,'index']);
+Route::post("/$servicesRoute/create", [ServicesController::class,'store']);
+Route::get("/$servicesRoute/{{id}}", [ServicesController::class,'store']);
 
 
