@@ -7,6 +7,14 @@ use Illuminate\Http\Request;
 
 class CategorieController extends Controller
 {
+
+    public function getBySearch(string $search)
+    {
+        return Categorie::select('id', 'name')
+            ->where('categories.name', 'like', '%' . $search . '%')
+            ->where('status', true)
+            ->get(10);
+    }
     /**
      * Display a listing of the resource.
      */
@@ -20,8 +28,7 @@ class CategorieController extends Controller
      */
     public function create()
     {
-         return response()->json(['message' => 'Show form to create a new category']);
-
+        return response()->json(['message' => 'Show form to create a new category']);
     }
 
     /**

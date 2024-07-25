@@ -11,11 +11,19 @@ class ServicesController extends Controller
     {
         return Service::where("category", $category)->get();
     }
+    public function getBySearch(string $search)
+    {
+        return Service::join('categories', 'services.category_id', '=', 'categories.id')
+                      ->where('categories.name', 'like', '%' . $search . '%')
+                      ->select('services.*')
+                      ->get();
+    }
+    
+
 
     //General functions
     public function index()
-    {          
-        // Obtener todos los servicios
+    {
         return response()->json(Service::with(['category:id,name'])->get());
     }
 

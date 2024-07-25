@@ -5,3 +5,4 @@ use Illuminate\Support\Facades\Route;
 
 Route::resource('services', ServicesController::class);
 Route::get('services/category/{category}', [ServicesController::class, 'getByCategory']);
+Route::get('services/category/find/{search}', [ServicesController::class, 'getBySearch']);
