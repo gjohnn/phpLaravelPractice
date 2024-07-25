@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Categorie;
 use Illuminate\Http\Request;
 
 class CategorieController extends Controller
@@ -11,7 +12,7 @@ class CategorieController extends Controller
      */
     public function index()
     {
-        //
+        return response()->json([Categorie::get()]);
     }
 
     /**
@@ -19,7 +20,8 @@ class CategorieController extends Controller
      */
     public function create()
     {
-        //
+         return response()->json(['message' => 'Show form to create a new category']);
+
     }
 
     /**

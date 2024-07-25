@@ -4,8 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Service;
 use Illuminate\Http\Request;
-use Illuminate\Log\Logger;
-use Illuminate\Support\Facades\DB;
 
 class ServicesController extends Controller
 {
@@ -17,11 +15,8 @@ class ServicesController extends Controller
     //General functions
     public function index()
     {          
-        Logger("asd");
-
         // Obtener todos los servicios
-        $services = Service::get();
-        return response()->json($services);
+        return response()->json(Service::with(['category:id,name'])->get());
     }
 
     /**
@@ -29,7 +24,6 @@ class ServicesController extends Controller
      */
     public function create()
     {
-        // Este método generalmente se usa para mostrar un formulario en una aplicación web
         return response()->json(['message' => 'Show form to create a new service']);
     }
 
@@ -38,21 +32,16 @@ class ServicesController extends Controller
      */
     public function store(Request $request)
     {
-        
-        try {
-            echo "asdasd";
-            $validatedData = $request->validate([
-                'title' => 'required|string|max:50',
-                'category' => 'required|string|max:50', 
-                'image' => 'nullable|string|max:255', 
-                'description' => 'required|string',
-            ]);
-    
-            $service = Service::create($validatedData);
-            return response()->json(['message' => 'Service created successfully', 'service' => $service], 201);
-        } catch (\Throwable $th) {
-            throw $th;
-        }
+        $validatedData = $request->validate([
+            'title' => 'required|string|max:50',
+            'category_id' => 'required|exists:categories,id', // FK
+            'image' => 'nullable|string|max:255',
+            'description' => 'required|string',
+        ]);
+
+        $service = Service::create($validatedData);
+
+        return response()->json(['message' => 'Service created successfully', 'service' => $service], 201);
     }
 
     public function show(Service $service)
