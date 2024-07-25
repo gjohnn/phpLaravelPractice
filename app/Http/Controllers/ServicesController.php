@@ -4,16 +4,21 @@ namespace App\Http\Controllers;
 
 use App\Models\Service;
 use Illuminate\Http\Request;
+use Illuminate\Log\Logger;
+use Illuminate\Support\Facades\DB;
 
 class ServicesController extends Controller
 {
-    public function getByCategory(string $category){
+    public function getByCategory(string $category)
+    {
         return Service::where("category", $category)->get();
     }
 
     //General functions
     public function index()
-    {
+    {          
+        Logger("asd");
+
         // Obtener todos los servicios
         $services = Service::get();
         return response()->json($services);
@@ -33,37 +38,33 @@ class ServicesController extends Controller
      */
     public function store(Request $request)
     {
-        $validatedData = $request->validate([
-            'title' => 'required|string|max:50',
-            'category' => 'required|string|max:50', 
-            'image' => 'nullable|string|max:255', 
-            'description' => 'required|string',
-        ]);
-
-        $service = Service::create($validatedData);
-
-        return response()->json(['message' => 'Service created successfully', 'service' => $service], 201);
+        
+        try {
+            echo "asdasd";
+            $validatedData = $request->validate([
+                'title' => 'required|string|max:50',
+                'category' => 'required|string|max:50', 
+                'image' => 'nullable|string|max:255', 
+                'description' => 'required|string',
+            ]);
+    
+            $service = Service::create($validatedData);
+            return response()->json(['message' => 'Service created successfully', 'service' => $service], 201);
+        } catch (\Throwable $th) {
+            throw $th;
+        }
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(Service $service)
     {
         return response()->json($service);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(Service $service)
     {
         return response()->json(['message' => 'Show form to edit the service', 'service' => $service]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, Service $service)
     {
         // Validar los datos de entrada
